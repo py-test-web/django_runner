@@ -42,8 +42,6 @@ echo "Start creating the Docker file DjangoProject"
 echo "directory name project?" 
 read -r dir_project
 
-./manage.py collectstatic
-
 touch Dockerfile
 cat > Dockerfile<<EOF
 FROM python:latest
@@ -60,16 +58,13 @@ EOF
 
 
 echo "Start creating nginx Dockerfile and conf"
-mkdir ./nginx/
-cd ./nginx || exist
-touch nginx.conf
-touch Dockerfile
+
 cat >nginx.conf <<EOF 
 events {}
 
 http {
   upstream django {
-      server web:8056;
+      server web:8000;
   }
 
   server {
@@ -83,21 +78,9 @@ http {
           proxy_pass http://django;
       }
 
-      location /static/ {
-          alias /var/www/static/;
-      }
   }
 }
 EOF
-echo "image nginx:tag?" 
-read -r nging_image
-cat >Dockerfile <<EOF 
-FROM $nging_image
-RUN rm /etc/nginx/nginx.conf
-COPY nginx.conf /etc/nginx/
-EOF
-
-cd ..
 
 # --------------- PART 7 ----------------
 echo "Start creating the docker-compose file"
@@ -138,16 +121,15 @@ services:
 #       - "6379:6379"
 #     restart: always
   nginx:
-    build:
-      context: nginx
+    image: nginx:1.22.1
     container_name: nginx
     command: nginx -g 'daemon off;'
     volumes:
-      - static_volume:/var/www/static/
+      - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
       - main
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
       - web
       - postgres
@@ -160,7 +142,8 @@ services:
       command: sh -c "python manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
         - .:/src/
-        - static_volume:/var/www/static/
+      ports:
+        - "8000:8000"
       networks:
         - main
       env_file:
@@ -189,4 +172,4 @@ volumes:
   static_volume:
 EOF
 
-docker-composeup up -d
+docker-compose up -d
