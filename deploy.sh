@@ -139,7 +139,7 @@ services:
   web:
       build: .  
       container_name: web
-      command: sh -c "python manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
+      command: sh -c "python3 manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
         - .:/src/
       ports:
@@ -163,6 +163,10 @@ services:
       - "5432:5432"
     restart: always
     env_file: .env
+    environment:
+        POSTGRES_USER
+        POSTGRES_PASSWORD
+        POSTGRES_DB
 
 
 networks:
