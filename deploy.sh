@@ -61,7 +61,7 @@ echo "Start creating nginx Dockerfile and conf"
 
 cat >nginx.conf <<EOF 
 events {}
-error_log /var/login/nginx/error.log;
+error_log /var/log/nginx/error.log;
 http {
   upstream django {
       server web:8000;
