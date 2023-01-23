@@ -61,7 +61,7 @@ echo "Start creating nginx Dockerfile and conf"
 
 cat >nginx.conf <<EOF 
 events {}
-
+error_log /var/login/nginx/error.log;
 http {
   upstream django {
       server web:8000;
@@ -164,9 +164,9 @@ services:
     restart: always
     env_file: .env
     environment:
-        POSTGRES_USER
-        POSTGRES_PASSWORD
-        POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
 
 
 networks:
