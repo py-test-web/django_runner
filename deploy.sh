@@ -1,10 +1,29 @@
 #!/bin/bash
 
-# Taks in server
+# #########################################################
+# permission access root server
+#  A)***login server:
+#      - sudo nano /etc/ssh/sshd_config
+#            PasswordAuthentication yes
+#            PermitRootLogin yes
+#      - sudo service ssh restart
+#      - sudo passwd
+#  B)***local
+#      - ssh-copy-id root@ip_server
+#
+#  C)***login server:
+#      - sudo passwd -l root
+#      - sudo nano `/etc/ssh/sshd_config`
+#            PasswordAuthentication no
+#             PermitRootLogin without-password
+#      - sudo service ssh restart
+# ##########################################################
+
+# ################################
 # 1.apt install python3-pip
 # 2.pip install virtualenv
 # 3.ssh-keygen => cat cat .ssh/id_rsa.pubcat .ssh/id_rsa.pub => hold in github
-
+# ################################
 
 echo "write Address Repository(sample:git@github.com:profile/project.git)" 
 read -r git_address
@@ -196,3 +215,5 @@ volumes:
 EOF
 
 docker-compose up -d
+
+exist 0
