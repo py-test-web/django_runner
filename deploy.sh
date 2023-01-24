@@ -20,12 +20,18 @@ echo "create .env"
 touch .env
 echo "write secret_key?" 
 read -r secret_key
-echo "write postgres_db?" 
-read -r postgres_db
-echo "write postgres_user?" 
-read -r postgres_user
-echo "write postgres_password?" 
-read -r postgres_password
+
+read -p "enter database name postgres_db [postgres]" postgres_db
+postgres_db=${postgres_db:-postgres}
+
+
+read -p "enter user name postgres_db [postgres]" postgres_user
+postgres_user=${postgres_user:-postgres}
+
+
+read -p "write postgres_password [postgres]?" postgres_password
+postgres_password=${postgres_password:-postgres}
+
 cat > .env<<EOF
 SECRET_KEY=$secret_key
 POSTGRES_DB=$postgres_db
@@ -84,12 +90,18 @@ EOF
 
 # --------------- PART 7 ----------------
 echo "Start creating the docker-compose file"
-echo "image broker:tag?" 
-read -r broker_image
-echo "image db:tag?" 
-read -r postgres_image
-echo "image cache:tag?" 
-read -r redis_image
+
+read -p "image broker:tag [rabbitmq:latest]?" broker_image
+broker_image=${broker_image:-rabbitmq}
+
+
+read -p "image db:tag? [postgres:latest]?" postgres_image
+postgres_image=${postgres_image:-postgres}
+
+
+read -p "image cache:tag? [redis:latest]?" redis_image
+redis_image=${redis_image:-redis}
+
 
 touch docker-compose.yml
 cat >docker-compose.yml <<EOF

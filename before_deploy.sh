@@ -2,8 +2,10 @@
 
 
 # ---------------------------------------
-echo "directory name virtualenv(env,venv,...)?"
-read -r dir_env
+
+read -p "directory name virtualenv[env]: " dir_env
+dir_env=${dir_env:-env}
+
 
 # active virtualenv
 .  "${dir_env}"/bin/activate
@@ -96,8 +98,8 @@ EOF
 
 # --------------- PART 2 ----------------
 # Config Settings
-echo "directory name project?" 
-read -r dir_project
+read -p "directory name project?[core]: " dir_project
+dir_project=${dir_project:-core}
 cd "$dir_project" || exist
 mkdir settings/
 mv settings.py ./settings/deploy.py
@@ -181,14 +183,13 @@ help :
 EOF
 
 
-echo "you must do tasks git Press [ENTER] to continue"
-read name
-echo -n "Press [ENTER] to continue,...: "
-read name
+read -p "you must do tasks git And Press [ENTER] to continue" name
 $name
 
-echo "ssh port?" 
-read -r ssh_port
+
+read -p "ssh port server?[22]" ssh_port
+ssh_port=${ssh_port:-22}
+
 
 echo "server address(root@ip)?" 
 read -r server_address
