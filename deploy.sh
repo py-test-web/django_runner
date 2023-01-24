@@ -1,12 +1,16 @@
 #!/bin/bash
 
+# Taks in server
+# 1.apt install python3-pip
+# 2.pip install virtualenv
+# 3.ssh-keygen => cat cat .ssh/id_rsa.pubcat .ssh/id_rsa.pub => hold in github
+
 
 pip install virtualenv
 
 
 
-echo "path working directory(example:/src)" 
-read -r working_directory
+working_directory=/src
 
 echo "write Address Repository(sample:git@github.com:profile/project.git)" 
 read -r git_address
