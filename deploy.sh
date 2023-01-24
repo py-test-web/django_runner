@@ -6,17 +6,11 @@
 # 3.ssh-keygen => cat cat .ssh/id_rsa.pubcat .ssh/id_rsa.pub => hold in github
 
 
-pip install virtualenv
-
-
-
-working_directory=/src
-
 echo "write Address Repository(sample:git@github.com:profile/project.git)" 
 read -r git_address
-git clone "$git_address" "$working_directory"
+git clone "$git_address" /src
 
-cd "$working_directory" || exist
+cd /src || exist
 python3 -m virtualenv venv
 . venv/bin/activate
 
@@ -60,11 +54,11 @@ touch Dockerfile
 cat > Dockerfile<<EOF
 FROM python:latest
 
-WORKDIR "$working_directory"
+WORKDIR /src
 COPY requirements.txt .
 RUN pip install -U pip
 RUN pip install -r requirements.txt
-COPY ."$working_directory"
+COPY . /src
 EXPOSE 8000
 CMD ["gunicorn","$dir_project.wsgi",":8000"]
 EOF
@@ -109,6 +103,11 @@ postgres_image=${postgres_image:-postgres}
 
 read -p "image cache:tag? [redis:latest]?" redis_image
 redis_image=${redis_image:-redis}
+
+
+# read -p "docker login, username:" docker_username
+# read -p "docker login, password:" docker_password
+# docker login --username "$docker_username" --password "$docker_password"
 
 
 touch docker-compose.yml
@@ -161,7 +160,7 @@ services:
       container_name: web
       command: sh -c "python3 manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
-        - .:"$working_directory"
+        - .:/src
       ports:
         - "8000:8000"
       networks:
