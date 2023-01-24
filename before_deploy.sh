@@ -194,5 +194,8 @@ ssh_port=${ssh_port:-22}
 echo "server address(root@ip)?" 
 read -r server_address
 
-scp -P "$ssh_port" ./deploy.sh "$server_address":/root
+echo "path working directory(example:/src)" 
+read -r working_directory
+
+scp -P "$ssh_port" ./deploy.sh "$server_address":"$working_directory"
 ssh -p "$ssh_port"  -t "$server_address" "sh deploy.sh; bash"

@@ -4,11 +4,15 @@
 pip install virtualenv
 
 
+
+echo "path working directory(example:/src)" 
+read -r working_directory
+
 echo "write Address Repository(sample:git@github.com:profile/project.git)" 
 read -r git_address
-git clone "$git_address" /src
+git clone "$git_address" "$working_directory"
 
-cd /src || exist
+cd "$working_directory" || exist
 python3 -m virtualenv venv
 . venv/bin/activate
 
@@ -52,11 +56,11 @@ touch Dockerfile
 cat > Dockerfile<<EOF
 FROM python:latest
 
-WORKDIR /src
+WORKDIR "$working_directory"
 COPY requirements.txt .
 RUN pip install -U pip
 RUN pip install -r requirements.txt
-COPY . /src
+COPY ."$working_directory"
 EXPOSE 8000
 CMD ["gunicorn","$dir_project.wsgi",":8000"]
 EOF
@@ -153,7 +157,7 @@ services:
       container_name: web
       command: sh -c "python3 manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
-        - .:/src/
+        - .:"$working_directory"
       ports:
         - "8000:8000"
       networks:
