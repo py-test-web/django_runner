@@ -194,7 +194,7 @@ ssh_port=${ssh_port:-22}
 echo "server address(root@ip)?" 
 read -r server_address
 
-
+server_address=root@192.168.56.101
 
 scp -P "$ssh_port" ./deploy.sh "$server_address":/root
 ssh -p "$ssh_port"  -t "$server_address" "sh ./deploy.sh; bash"

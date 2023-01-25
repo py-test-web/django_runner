@@ -27,6 +27,7 @@
 
 echo "write Address Repository(sample:git@github.com:profile/project.git)" 
 read -r git_address
+git_address=git@github.com:dfpj/deploy.git
 git clone "$git_address" /src
 
 cd /src || exist
