@@ -106,7 +106,7 @@ http {
           proxy_pass http://django;
       }
       
-      location /static/ {
+      location /var/www/static/ {
         alias /var/www/static/;
       }
 
