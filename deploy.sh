@@ -109,6 +109,7 @@ http {
       location /static/ {
         autoindex on;
         alias /var/www/static/;
+        add_header Access-Control-Allow-Origin *;
       }
 
   }
@@ -184,7 +185,7 @@ services:
   web:
       build: .  
       container_name: web
-      command: sh -c "python manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
+      command: sh -c "python manage.py migrate && python manage.py collectstatic && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
         - .:/src
         - static_volume:/var/www/static/
