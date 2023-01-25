@@ -99,7 +99,7 @@ http {
 
       listen 80;
 
-      location /static/ {
+      location /static {
         autoindex off;
         alias /var/www/static/;
       }
