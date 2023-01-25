@@ -136,7 +136,8 @@ DATABASES = {
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR/'static',
+    BASE_DIR / "static",
+    '/var/www/static/',
 ]
 STATIC_ROOT = '/var/www/static/'
 
