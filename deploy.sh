@@ -104,6 +104,10 @@ http {
           proxy_redirect off;
           proxy_pass http://django;
       }
+      
+      location /static/ {
+        alias /var/www/static/;
+      }
 
   }
 }
@@ -164,6 +168,7 @@ services:
     command: nginx -g 'daemon off;'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/var/www/static/
     networks:
       - main
     ports:
@@ -177,9 +182,10 @@ services:
   web:
       build: .  
       container_name: web
-      command: sh -c "python3 manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
+      command: sh -c "python3 manage.py collectstatic && python3 manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
         - .:/src
+        - static_volume:/var/www/static/
       ports:
         - "8000:8000"
       networks:
