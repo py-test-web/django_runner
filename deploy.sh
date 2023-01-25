@@ -169,7 +169,7 @@ services:
     command: nginx -g 'daemon off;'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - static_volume:/var/www/static/
+      - /var/www/static/:/var/www/static/
     networks:
       - main
     ports:
@@ -186,7 +186,7 @@ services:
       command: sh -c "python3 manage.py collectstatic && python3 manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
         - .:/src
-        - static_volume:/var/www/static/
+        - /var/www/static/:/var/www/static/
       ports:
         - "8000:8000"
       networks:
@@ -218,7 +218,6 @@ networks:
   main:
 volumes:
   db_volume:
-  static_volume:
 EOF
 
 docker-compose up -d
