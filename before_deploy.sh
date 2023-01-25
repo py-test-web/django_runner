@@ -101,13 +101,10 @@ EOF
 read -p "directory name project?[core]: " dir_project
 dir_project=${dir_project:-core}
 cd "$dir_project" || exist
-mkdir settings/
-mv settings.py ./settings/deploy.py
-cd settings/ || exist
-touch __init__.py
-cat >__init__.py <<EOF 
+
+cat >>settings.py <<EOF 
 import environ
-from .deploy import *
+
 
 env = environ.Env()
 environ.Env.read_env(f'{BASE_DIR}/.env')
@@ -135,10 +132,6 @@ DATABASES = {
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    '/var/www/static/',
-]
 STATIC_ROOT = '/var/www/static/'
 
 # SESSION_COOKIE_SECURE=True
@@ -151,7 +144,7 @@ STATIC_ROOT = '/var/www/static/'
 # SECURE_BROWSER_XSS_FILTER=True
 EOF
 # ---------------------------------------
-cd ../..
+cd ..
 # ---------------------------------------
 
 
