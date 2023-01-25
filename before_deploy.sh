@@ -135,6 +135,9 @@ DATABASES = {
 
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR/'static',
+]
 STATIC_ROOT = '/var/www/static/'
 
 # SESSION_COOKIE_SECURE=True

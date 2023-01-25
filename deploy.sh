@@ -107,6 +107,7 @@ http {
       }
       
       location /static/ {
+        autoindex on;
         alias /var/www/static/;
       }
 
@@ -223,4 +224,4 @@ EOF
 
 docker-compose up -d
 
-exist 0
+exit 0
