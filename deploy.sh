@@ -167,7 +167,7 @@ services:
   nginx:
     image: nginx:1.22.1
     container_name: nginx
-    command: nginx -g 'daemon off;'
+#   command: nginx -g 'daemon off;'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - static_volume:/var/www/static/
