@@ -32,16 +32,14 @@ git clone "$git_address" /src
 
 cd /src || exist
 python3 -m virtualenv venv
-. venv/bin/activate
-
-
+bash -c "source venv/bin/activate"
 pip install -r requirements.txt
 
 # --------------- PART 3 ----------------
 echo "create .env"
 touch .env
-echo "write secret_key?" 
-read -r secret_key
+
+secret_key=$(openssl rand -hex 32)
 
 read -p "enter database name postgres_db [postgres]" postgres_db
 postgres_db=${postgres_db:-postgres}
@@ -67,8 +65,8 @@ echo "Writing the .env file is finished"
 
 # --------------- PART 5 ----------------
 echo "Start creating the Docker file DjangoProject"
-echo "directory name project?" 
-read -r dir_project
+
+dir_project=$(basename "$(dirname "$(find . -name "settings.py")")")
 
 touch Dockerfile
 cat > Dockerfile<<EOF

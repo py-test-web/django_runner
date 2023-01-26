@@ -2,13 +2,7 @@
 
 
 # ---------------------------------------
-
-read -p "directory name virtualenv[env]: " dir_env
-dir_env=${dir_env:-env}
-
-
-# active virtualenv
-.  "${dir_env}"/bin/activate
+bash -c "source $(find . -path "*/bin/activate")"
 # ---------------------------------------
 
 
@@ -98,8 +92,8 @@ EOF
 
 # --------------- PART 2 ----------------
 # Config Settings
-read -p "directory name project?[core]: " dir_project
-dir_project=${dir_project:-core}
+
+dir_project=$(basename "$(dirname "$(find . -name "settings.py")")")
 cd "$dir_project" || exist
 
 cat >>settings.py <<EOF 
@@ -180,8 +174,8 @@ help :
 EOF
 
 
-read -p "you must do tasks git And Press [ENTER] to continue" name
-$name
+read -n1 -p "Press any key to continue"
+
 
 
 read -p "ssh port server?[22]" ssh_port
