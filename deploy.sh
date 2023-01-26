@@ -78,7 +78,6 @@ WORKDIR /src
 COPY requirements.txt .
 RUN pip install -U pip
 RUN pip install -r requirements.txt
-RUN python manage.py collectstatic --noinput
 COPY . /src
 EXPOSE 8000
 CMD ["gunicorn","$dir_project.wsgi:application", "--bind", "0.0.0.0:8000"]
@@ -185,7 +184,7 @@ services:
   web:
       build: .  
       container_name: web
-      command: sh -c "python manage.py migrate && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
+      command: sh -c "python manage.py migrate && python manage.py collectstatic && gunicorn $dir_project.wsgi -b 0.0.0.0:8000"
       volumes:
         - .:/src
         - static_volume:/var/www/static/
